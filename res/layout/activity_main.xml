@@ -18,5 +18,17 @@
         android:layout_margin="10dp"
         android:max="4000"
         android:progressDrawable="@drawable/progressbar" />
+    
+    
+    <LinearLayout 
+        android:id="@+id/linlay"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical"
+        >
+        
+        
+    </LinearLayout>
 
 </LinearLayout>

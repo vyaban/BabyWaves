@@ -10,7 +10,13 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GraphView.GraphViewData;
+import com.jjoe64.graphview.GraphViewSeries;
+import com.jjoe64.graphview.LineGraphView;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
@@ -19,6 +25,7 @@ import android.os.Environment;
 import android.text.format.Time;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -38,7 +45,9 @@ public class MainActivity extends Activity {
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		Intent intent = getIntent(); //getting intent
+		String value = intent.getStringExtra("key"); //if it's a string you stored.
+		Toast.makeText(MainActivity.this, value, Toast.LENGTH_SHORT).show();
 		initRecorder();
 
 		mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -71,6 +80,27 @@ public class MainActivity extends Activity {
 				}
 			}
 		});
+		
+		
+		// init example series data
+		GraphViewSeries exampleSeries = new GraphViewSeries(new GraphViewData[] {
+		    new GraphViewData(1, 2.0d)
+		    , new GraphViewData(2, 1.5d)
+		    , new GraphViewData(3, 2.5d)
+		    , new GraphViewData(4, 1.0d)
+		});
+		 
+		GraphView graphView = new LineGraphView(
+		    this // context
+		    , "GraphViewDemo" // heading
+		);
+		graphView.addSeries(exampleSeries); // data
+		 
+		LinearLayout layout = (LinearLayout) findViewById(R.id.linlay);
+		layout.addView(graphView);
+		
+		
+		
 	}
 
 	@Override
