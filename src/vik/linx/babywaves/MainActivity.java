@@ -9,9 +9,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Random;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.GraphView.GraphViewData;
+import com.jjoe64.graphview.GraphViewDataInterface;
 import com.jjoe64.graphview.GraphViewSeries;
 import com.jjoe64.graphview.LineGraphView;
 
@@ -32,7 +34,6 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 
 	public static final int SAMPLE_RATE = 16000;
-
 	private AudioRecord mRecorder;
 	private File mRecording;
 	private short[] mBuffer;
@@ -40,7 +41,8 @@ public class MainActivity extends Activity {
 	private final String stopRecordingLabel = "Stop recording";
 	private boolean mIsRecording = false;
 	private ProgressBar mProgressBar;
-
+	private GraphView graphView;
+	
 	@Override
 	public void onCreate(final Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -82,26 +84,20 @@ public class MainActivity extends Activity {
 		});
 		
 		
-		// init example series data
-		GraphViewSeries exampleSeries = new GraphViewSeries(new GraphViewData[] {
-		    new GraphViewData(1, 2.0d)
-		    , new GraphViewData(2, 1.5d)
-		    , new GraphViewData(3, 2.5d)
-		    , new GraphViewData(4, 1.0d)
-		});
+		
 		 
-		GraphView graphView = new LineGraphView(
-		    this // context
-		    , "GraphViewDemo" // heading
-		);
-		graphView.addSeries(exampleSeries); // data
-		 
+		graphView = new LineGraphView( this /*context*/, "Amplitude Graph" /* heading */);
+		graphView.setScrollable(true);
+		graphView.setViewPort(0, 30); //the x range you want to show without scrolling
+		// initial example series data
+		GraphViewSeries liveValueSeries = new GraphViewSeries(new GraphViewDataInterface[0]);
+		graphView.addSeries(liveValueSeries);
 		LinearLayout layout = (LinearLayout) findViewById(R.id.linlay);
 		layout.addView(graphView);
+		// TODO FIX
+		//liveValueSeries.appendData(new GraphView.GraphViewData(10, mProgressBar.getProgress()), true, 300);
 		
-		
-		
-	}
+	}	
 
 	@Override
 	public void onDestroy() {
